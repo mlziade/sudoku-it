@@ -58,7 +58,9 @@ class Sudoku:
 
     def solve_grid_backtracking(self, col: int, row: int) -> bool:
         """
-        Solve the Sudoku grid using Backtracking algorithm.
+        Solve the Sudoku grid using the Backtracking algorithm.
+        It fills the grid recursively, trying each number from 1 to 9 in each empty cell.
+        It moves to the cell immediately to the right, and wraps to the beginning of the next row when reaching the end of a row.
         """
         # If we've reached past the last row, the puzzle is solved
         if row == self.length:

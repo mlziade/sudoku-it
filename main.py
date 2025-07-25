@@ -47,22 +47,30 @@ class Sudoku:
         
         return True
 
-    def generate_grid_depth_first_search(self):
+    def solve_grid_backtracking(self, col: int, row: int) -> bool:
         """
-        Generate a Sudoku grid using Depth-First Search algorithm.
-        This method is a placeholder and should be implemented with the actual DFS logic.
+        Solve the Sudoku grid using Backtracking algorithm.
         """
-        # Placeholder for DFS implementation
-        pass
+        # If we've reached past the last row, the puzzle is solved
+        if row == self.length:
+            return True
 
-    def generate_grid_backtracking(self):
-        """
-        Generate a Sudoku grid using Backtracking algorithm.
-        This method is a placeholder and should be implemented with the actual backtracking logic.
-        """
-        # Placeholder for Backtracking implementation
-        pass
-       
+        # Move to the next cell
+        next_col = (col + 1) % self.width # Move to the next column, wrap around if needed
+        next_row = row + 1 if next_col == 0 else row # Continue to the next row if we wrapped around
+
+        # If the current cell is already filled, skip to the next cell
+        if self.grid[row][col] != 0:
+            return self.solve_grid_backtracking(next_col, next_row)
+
+        # Try placing each value from 1 to 9 in the current cell
+        for value in range(1, 10):
+            if self.verify_cell_value(row, col, value):
+                self.grid[row][col] = value
+                if self.solve_grid_backtracking(next_col, next_row):
+                    return True
+                self.grid[row][col] = 0  # Backtrack if placing value didn't lead to a solution
+        return False
 
 def main():
     pass

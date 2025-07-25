@@ -82,7 +82,14 @@ class Sudoku:
         return False
 
 def main():
-    pass
+    sudoku = Sudoku()
+    sudoku.set_random_seed()
+    sudoku.print_grid()
+    if sudoku.solve_grid_backtracking(0, 0):
+        print("Sudoku solved successfully:")
+        sudoku.print_grid()
+    else:
+        print("No solution exists.")
 
 if __name__ == "__main__":
     main()

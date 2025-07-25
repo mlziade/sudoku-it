@@ -17,6 +17,15 @@ class Sudoku:
         """
         self.grid[randint(0, 8)][randint(0, 8)] = randint(1, 9)
 
+    def print_grid(self):
+        """
+        Print the Sudoku grid in a readable format.
+        Empty cells are represented by 0.
+        """
+        for row in self.grid:
+            print(" ".join(str(num) if num != 0 else '.' for num in row))
+        print()
+
     def verify_cell_value(self, row: int, col: int, value: int) -> bool:
         """
         Verify if placing a value in the specified cell is valid according to Sudoku rules.

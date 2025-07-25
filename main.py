@@ -1,12 +1,21 @@
+from random import randint
+
 class Sudoku:
     """
     A Sudoku is a 9x9 grid where each row, column, and 3x3 box must contain the digits 1-9 without repetition.
     The grid is represented as a list of lists, where each inner list represents a row.
     """
-    def __init__(self, grid):
-        self.grid: list[list[int]] = grid
+    def __init__(self):
+        self.grid: list[list[int]] = [[0] * 9 for _ in range(9)]
         self.length: int = 9
         self.width: int = 9
+
+    def set_random_seed(self):
+        """
+        Set a random seed for the Sudoku grid.
+        This method fills the grid with random values between 1 and 9 in a single cell.
+        """
+        self.grid[randint(0, 8)][randint(0, 8)] = randint(1, 9)
 
     def verify_cell_value(self, row: int, col: int, value: int) -> bool:
         """

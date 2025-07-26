@@ -22,8 +22,15 @@ class Sudoku:
         Print the Sudoku grid in a readable format.
         Empty cells are represented by 0.
         """
-        for row in self.grid:
-            print(" ".join(str(num) if num != 0 else '.' for num in row))
+        for i, row in enumerate(self.grid):
+            if i % 3 == 0 and i != 0:
+                print("------+-------+------")
+            formatted_row = []
+            for j, num in enumerate(row):
+                if j % 3 == 0 and j != 0:
+                    formatted_row.append("|")
+                formatted_row.append(str(num) if num != 0 else '.')
+            print(" ".join(formatted_row))
         print()
 
     def verify_cell_value(self, row: int, col: int, value: int) -> bool:
@@ -107,7 +114,7 @@ class Sudoku:
             if len(set(box)) != len([num for num in box if num != 0]):
                 return False
         
-        return True        
+        return True
 
 def main():
     sudoku = Sudoku()

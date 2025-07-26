@@ -82,6 +82,32 @@ class Sudoku:
                     return True
                 self.grid[row][col] = 0  # Backtrack if placing value didn't lead to a solution
         return False
+    
+    def validate_full_grid(self) -> bool:
+        """
+        Validate the entire Sudoku grid to ensure it follows Sudoku rules.
+        This checks all rows, columns, and 3x3 boxes for duplicates.
+        """
+        # Check if the grid is completely filled
+        for i in range(self.length):
+            # Check if each row has unique numbers (ignoring zeros)
+            if len(set(self.grid[i])) != len([num for num in self.grid[i] if num != 0]):
+                return False
+            
+            # Check if each column has unique numbers (ignoring zeros)
+            col = [self.grid[j][i] for j in range(self.length)]
+            if len(set(col)) != len([num for num in col if num != 0]):
+                return False
+            
+            # Check each 3x3 box for unique numbers (ignoring zeros)
+            box_row_start = (i // 3) * 3
+            box_col_start = (i % 3) * 3
+            box = [self.grid[r][c] for r in range(box_row_start, box_row_start + 3)
+                   for c in range(box_col_start, box_col_start + 3)]
+            if len(set(box)) != len([num for num in box if num != 0]):
+                return False
+        
+        return True        
 
 def main():
     sudoku = Sudoku()

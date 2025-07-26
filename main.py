@@ -17,6 +17,13 @@ class Sudoku:
         """
         self.grid[randint(0, 8)][randint(0, 8)] = randint(1, 9)
 
+    def return_seed_position(self) -> tuple[int, int]:
+        """
+        Return the position of the randomly set seed in the Sudoku grid.
+        """
+        positions = [(i, j) for i in range(self.length) for j in range(self.width) if self.grid[i][j] != 0]
+        return positions[0] if positions else (-1, -1)
+
     def print_grid(self):
         """
         Print the Sudoku grid in a readable format.
@@ -32,6 +39,29 @@ class Sudoku:
                 formatted_row.append(str(num) if num != 0 else '.')
             print(" ".join(formatted_row))
         print()
+
+    def list_possibles_values_in_cell(self, row: int, col: int) -> list[int]:
+        """
+        List all possible values that can be placed in the specified cell according to Sudoku rules.
+        """
+        if self.grid[row][col] != 0:
+            return []
+
+        possible_values = set(range(1, 10))
+
+        # Check row
+        possible_values -= set(self.grid[row])
+
+        # Check column
+        possible_values -= {self.grid[r][col] for r in range(self.length)}
+
+        # Check 3x3 box
+        box_row_start: int = (row // 3) * 3
+        box_col_start: int = (col // 3) * 3
+        possible_values -= {self.grid[r][c] for r in range(box_row_start, box_row_start + 3)
+                            for c in range(box_col_start, box_col_start + 3)}
+
+        return list(possible_values)
 
     def verify_cell_value(self, row: int, col: int, value: int) -> bool:
         """
@@ -115,6 +145,31 @@ class Sudoku:
                 return False
         
         return True
+
+class SudokuTreeNode:
+    """
+    A node in a tree representing a Sudoku cell.
+    Each node contains the position of the cell (x_pos, y_pos) and a list of possible values that can be placed in that cell (keys).
+    The node can have multiple children, representing the next cell to be filled in the Sudoku grid, with each child node containing the possible values for that cell based on the current value of the key in its parent node.
+    """
+    def __init__(self, x_pos: int, y_pos: int, possible_values: list[int], is_root: bool = False):
+        self.x_pos: int = x_pos
+        self.y_pos: int = y_pos
+        self.is_root: bool = is_root
+        self.possible_values: list[int] = possible_values
+        self.children: list[SudokuTreeNode] = []
+
+class SudokuTree:
+    def __init__(self):
+        self.sudoku: Sudoku = Sudoku().set_random_seed() # Initialize Sudoku with a random seed
+        seed_pos = self.sudoku.return_seed_position()
+        self.root: SudokuTreeNode = SudokuTreeNode(
+            x_pos=seed_pos[0], 
+            y_pos=seed_pos[1],
+            possible_values=self.sudoku.list_possibles_values_in_cell(seed_pos[0], seed_pos[1]),
+            is_root=True
+        )
+        
 
 def main():
     sudoku = Sudoku()

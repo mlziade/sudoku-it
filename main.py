@@ -189,7 +189,8 @@ class SudokuTree:
 
 def main():
     sudoku = Sudoku()
-    sudoku.set_random_seed()
+    # sudoku.set_random_seed()  # Set a random seed in the Sudoku grid
+    sudoku.set_random_grid(10)  # Fill the grid with 10 random values
     sudoku.print_grid()
     if sudoku.solve_grid_backtracking(0, 0):
         print("Sudoku solved successfully:")

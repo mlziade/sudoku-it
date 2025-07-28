@@ -23,6 +23,22 @@ class Sudoku:
         """
         positions = [(i, j) for i in range(self.length) for j in range(self.width) if self.grid[i][j] != 0]
         return positions[0] if positions else (-1, -1)
+    
+    def set_random_grid(self, quantity: int):
+        """
+        Set a random grid with a specified number of filled cells.
+        :param quantity: Number of cells to fill with random values (1-81).
+        """
+        if not (1 <= quantity <= 81):
+            raise ValueError("Quantity must be between 1 and 81.")
+        
+        for _ in range(quantity):
+            row, col = randint(0, 8), randint(0, 8)
+            value = randint(1, 9)
+            while not self.verify_cell_value(row, col, value):
+                row, col = randint(0, 8), randint(0, 8)
+                value = randint(1, 9)
+            self.grid[row][col] = value
 
     def print_grid(self):
         """
